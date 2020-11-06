@@ -1,4 +1,4 @@
-package org.sgci.resource.client.util;
+package org.sgci.resource.client;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -17,20 +17,26 @@ package org.sgci.resource.client.util;
  * limitations under the License.
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.sgci.resource.client.SGCIResourceException;
-import org.sgci.resource.client.models.ResourcesSchema;
+public class SGCIResourceException extends Exception {
 
-import java.io.IOException;
-
-public class JSONUtil {
-
-    public static ResourcesSchema getResourceSchemaFromString(String contentStr) throws SGCIResourceException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.readValue(contentStr, ResourcesSchema.class);
-        } catch (IOException e) {
-            throw new SGCIResourceException("Failed to convert the json sting to object format. " + contentStr, e);
-        }
+    public SGCIResourceException() {
+        super();
     }
+
+    public SGCIResourceException(String message) {
+        super(message);
+    }
+
+    public SGCIResourceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SGCIResourceException(Throwable cause) {
+        super(cause);
+    }
+
+    protected SGCIResourceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
 }
