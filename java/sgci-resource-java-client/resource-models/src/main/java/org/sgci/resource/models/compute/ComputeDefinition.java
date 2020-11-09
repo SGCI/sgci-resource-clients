@@ -16,6 +16,7 @@ package org.sgci.resource.models.compute;
  * limitations under the License.
  */
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.sgci.resource.models.ConnectionDefinition;
 import org.sgci.resource.models.ResourceDefinition;
 import org.sgci.resource.models.storage.StorageDefinition;
@@ -23,6 +24,7 @@ import org.sgci.resource.models.storage.StorageDefinition;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(as = ComputeDefinition.class)
 public class ComputeDefinition implements ResourceDefinition {
     public enum SchedulerType {
         FORK, BATCH, ON_DEMAND

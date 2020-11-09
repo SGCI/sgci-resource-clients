@@ -1,5 +1,4 @@
 package org.sgci.resource.client;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -20,6 +19,7 @@ package org.sgci.resource.client;
 import org.sgci.resource.client.models.ResourcesSchema;
 import org.sgci.resource.client.util.GithubUtil;
 import org.sgci.resource.client.util.JSONUtil;
+import org.sgci.resource.models.SGCIResource;
 
 public class SGCIResourceClient {
 
@@ -27,13 +27,24 @@ public class SGCIResourceClient {
 
     /**
      * Returns {@link ResourcesSchema} which is available in a Git file
-     * @param resourceFile Resource file name
+     * @param resourceId Resource Identifier
      * @return
      * @throws SGCIResourceException if the resource is not available or repository is not accessibly
      */
-    public ResourcesSchema getResourceFromGitFile(String resourceFile) throws SGCIResourceException {
-        String content = GithubUtil.getFileContent(repo, "data/" + resourceFile + ".json");
-        return JSONUtil.getResourceSchemaFromString(content);
+    public SGCIResource getResourceFromGitFile(String resourceId) throws SGCIResourceException {
+        String content = GithubUtil.getFileContent(repo, "data/" + resourceId + ".json");
+        return JSONUtil.getResourceFromString(content);
+    }
+
+    /**
+     *
+     * @param resourceId
+     * @param resource
+     * @throws SGCIResourceException
+     */
+    public void addResourceToGit(String resourceId, SGCIResource resource) throws SGCIResourceException {
+        String asStr = JSONUtil.getStringFromResource(resource);
+        System.out.println(asStr);
     }
 
     public SGCIResourceClient(String repo) {
@@ -42,7 +53,9 @@ public class SGCIResourceClient {
 
     public static void main(String args[]) throws SGCIResourceException {
         SGCIResourceClient client = new SGCIResourceClient("SGCI/sgci-resource-inventory");
-        System.out.println(client.getResourceFromGitFile("stampede2.tacc.xsede"));
+        SGCIResource resource = client.getResourceFromGitFile("stampede2.tacc.xsede");
+        client.addResourceToGit("aa", resource);
+        System.out.println(resource);
     }
 }
 

@@ -16,6 +16,9 @@ package org.sgci.resource.models;
  * limitations under the License.
  */
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.sgci.resource.models.deserializer.ResourceDefinitionDeserializer;
+
 public class SGCIResource {
 
     public enum ResourceType {
@@ -27,9 +30,11 @@ public class SGCIResource {
     private String name;
     private String description;
     private ResourceType resourceType;
+
+    @JsonDeserialize(using = ResourceDefinitionDeserializer.class)
     private ResourceDefinition resource;
     private String host;
-    private ConnectionDefinition connectionDefinition;
+    private ConnectionDefinition connection;
 
     public String getSchemaVersion() {
         return schemaVersion;
@@ -94,12 +99,12 @@ public class SGCIResource {
         return this;
     }
 
-    public ConnectionDefinition getConnectionDefinition() {
-        return connectionDefinition;
+    public ConnectionDefinition getConnection() {
+        return connection;
     }
 
-    public SGCIResource setConnectionDefinition(ConnectionDefinition connectionDefinition) {
-        this.connectionDefinition = connectionDefinition;
+    public SGCIResource setConnection(ConnectionDefinition connection) {
+        this.connection = connection;
         return this;
     }
 }

@@ -17,20 +17,33 @@ package org.sgci.resource.client.util;
  * limitations under the License.
  */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sgci.resource.client.SGCIResourceException;
 import org.sgci.resource.client.models.ResourcesSchema;
+import org.sgci.resource.models.SGCIResource;
 
 import java.io.IOException;
 
 public class JSONUtil {
 
-    public static ResourcesSchema getResourceSchemaFromString(String contentStr) throws SGCIResourceException {
+    public static SGCIResource getResourceFromString(String contentStr) throws SGCIResourceException {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(contentStr, ResourcesSchema.class);
+            return objectMapper.readValue(contentStr, SGCIResource.class);
         } catch (IOException e) {
             throw new SGCIResourceException("Failed to convert the json sting to object format. " + contentStr, e);
+        }
+    }
+
+    public static String getStringFromResource(SGCIResource resource) throws SGCIResourceException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        try {
+            return objectMapper.writeValueAsString(resource);
+        } catch (JsonProcessingException e) {
+            throw new SGCIResourceException("Failed to convert resource object to a string", e);
         }
     }
 }

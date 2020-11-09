@@ -16,9 +16,11 @@ package org.sgci.resource.models.storage;
  * limitations under the License.
  */
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.sgci.resource.models.ConnectionDefinition;
 import org.sgci.resource.models.ResourceDefinition;
 
+@JsonDeserialize(as = StorageDefinition.class)
 public class StorageDefinition implements ResourceDefinition {
     public enum StorageType {
         POSIX, S3, OBJECT_STORE

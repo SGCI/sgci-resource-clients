@@ -28,7 +28,7 @@ public class ConnectionDefinition {
     private ConnectionProtocol connectionProtocol;
     private SecurityProtocol securityProtocol;
     private Integer port;
-    private boolean useProxy;
+    private Boolean useProxy;
     private String proxyHost;
     private Integer proxyPort;
 
@@ -59,11 +59,11 @@ public class ConnectionDefinition {
         return this;
     }
 
-    public boolean isUseProxy() {
+    public Boolean getUseProxy() {
         return useProxy;
     }
 
-    public ConnectionDefinition setUseProxy(boolean useProxy) {
+    public ConnectionDefinition setUseProxy(Boolean useProxy) {
         this.useProxy = useProxy;
         return this;
     }
