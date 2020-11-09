@@ -1,2 +1,6 @@
 .idea
 sgci-resource-java-client.iml
+resource-client/target
+resource-models/target
+resource-models/resource-models.iml
+resource-client/resource-client.iml
