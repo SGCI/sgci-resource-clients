@@ -17,12 +17,14 @@ package org.sgci.resource.client.util;
  * limitations under the License.
  */
 
+import com.google.common.hash.Hashing;
 import com.jcabi.github.*;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.sgci.resource.client.SGCIResourceException;
 
 import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import java.io.IOException;
 
 public class GithubUtil {
@@ -47,11 +49,18 @@ public class GithubUtil {
         Repo repo = github.repos().get(new Coordinates.Simple(repoURL));
 
         try {
-            repo.contents().create(Json.createObjectBuilder()
-                                .add("path", filePath)
-                                .add("message", "Adding file " + filePath)
-                                .add("branch", "master")
-                                .add("content", Base64.encode(content.getBytes())).build());
+
+            JsonObjectBuilder jsonBuilder = Json.createObjectBuilder()
+                    .add("path", filePath)
+                    .add("message", "Adding file " + filePath)
+                    .add("branch", "master")
+                    .add("content", Base64.encode(content.getBytes()));
+            if (repo.contents().exists(filePath, "master")) {
+                jsonBuilder.add("sha", new Content.Smart(repo.contents().get(filePath)).sha());
+                repo.contents().update(filePath, jsonBuilder.build());
+            } else {
+                repo.contents().create(jsonBuilder.build());
+            }
         } catch (IOException e) {
             throw new SGCIResourceException("Failed to create file " + filePath + " in repo " + repoURL, e);
         }

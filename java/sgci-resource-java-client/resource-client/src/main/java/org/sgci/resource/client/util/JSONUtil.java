@@ -41,7 +41,7 @@ public class JSONUtil {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         try {
-            return objectMapper.writeValueAsString(resource);
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(resource);
         } catch (JsonProcessingException e) {
             throw new SGCIResourceException("Failed to convert resource object to a string", e);
         }
