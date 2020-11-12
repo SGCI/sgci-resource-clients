@@ -24,6 +24,9 @@ import org.sgci.resource.models.SGCIResource;
 public class SGCIResourceClient {
 
     private String repo;
+    private String computeDir;
+    private String storageDir;
+    private String authToken;
 
     /**
      * Returns {@link ResourcesSchema} which is available in a Git file
@@ -31,8 +34,8 @@ public class SGCIResourceClient {
      * @return
      * @throws SGCIResourceException if the resource is not available or repository is not accessibly
      */
-    public SGCIResource getResourceFromGitFile(String resourceId) throws SGCIResourceException {
-        String content = GithubUtil.getFileContent(repo, "data/" + resourceId + ".json");
+    public SGCIResource getComputeResourceFromGitFile(String resourceId) throws SGCIResourceException {
+        String content = GithubUtil.getFileContent(authToken, repo,  computeDir + "/" + resourceId + ".json");
         return JSONUtil.getResourceFromString(content);
     }
 
@@ -42,19 +45,23 @@ public class SGCIResourceClient {
      * @param resource
      * @throws SGCIResourceException
      */
-    public void addResourceToGit(String resourceId, SGCIResource resource) throws SGCIResourceException {
+    public void addComputeResourceToGit(String resourceId, SGCIResource resource) throws SGCIResourceException {
         String asStr = JSONUtil.getStringFromResource(resource);
         System.out.println(asStr);
+        GithubUtil.addFile(authToken, repo, computeDir + "/" + resourceId + ".json", asStr);
     }
 
-    public SGCIResourceClient(String repo) {
+    public SGCIResourceClient(String authToken, String repo, String computeDir, String storageDir) {
         this.repo = repo;
+        this.computeDir = computeDir;
+        this.storageDir = storageDir;
+        this.authToken = authToken;
     }
 
     public static void main(String args[]) throws SGCIResourceException {
-        SGCIResourceClient client = new SGCIResourceClient("SGCI/sgci-resource-inventory");
-        SGCIResource resource = client.getResourceFromGitFile("stampede2.tacc.xsede");
-        client.addResourceToGit("aa", resource);
+        SGCIResourceClient client = new SGCIResourceClient("", "SGCI/sgci-resource-inventory", "data/compute", "data/storage");
+        SGCIResource resource = client.getComputeResourceFromGitFile("stampede2.tacc.xsede");
+        client.addComputeResourceToGit("aa", resource);
         System.out.println(resource);
     }
 }

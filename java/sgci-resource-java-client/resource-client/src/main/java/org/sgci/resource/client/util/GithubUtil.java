@@ -18,14 +18,16 @@ package org.sgci.resource.client.util;
  */
 
 import com.jcabi.github.*;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import org.apache.commons.io.IOUtils;
 import org.sgci.resource.client.SGCIResourceException;
 
+import javax.json.Json;
 import java.io.IOException;
 
 public class GithubUtil {
-    public static String getFileContent(String repoURL, String filePath) throws SGCIResourceException {
-        Github github = new RtGithub();
+    public static String getFileContent(String authToken, String repoURL, String filePath) throws SGCIResourceException {
+        Github github = new RtGithub(authToken);
         Repo repo = github.repos().get(new Coordinates.Simple(repoURL));
 
         try {
@@ -37,6 +39,21 @@ public class GithubUtil {
             }
         } catch (IOException e) {
             throw new SGCIResourceException("Failed to communicate with repo " + repoURL + " to fetch file in path " + filePath, e);
+        }
+    }
+
+    public static void addFile(String authToken, String repoURL, String filePath, String content) throws SGCIResourceException {
+        Github github = new RtGithub(authToken);
+        Repo repo = github.repos().get(new Coordinates.Simple(repoURL));
+
+        try {
+            repo.contents().create(Json.createObjectBuilder()
+                                .add("path", filePath)
+                                .add("message", "Adding file " + filePath)
+                                .add("branch", "master")
+                                .add("content", Base64.encode(content.getBytes())).build());
+        } catch (IOException e) {
+            throw new SGCIResourceException("Failed to create file " + filePath + " in repo " + repoURL, e);
         }
     }
 }

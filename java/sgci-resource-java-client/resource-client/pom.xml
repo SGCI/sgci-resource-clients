@@ -22,6 +22,11 @@
             <artifactId>jcabi-github</artifactId>
             <version>1.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1.4</version>
+        </dependency>
     </dependencies>
 
 </project>
