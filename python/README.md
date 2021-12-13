@@ -4,15 +4,15 @@
     <tr>
         <td>Latest Release</td>
         <td>
-            <a href="https://pypi.org/project/sgci_resource/"/>
-            <img src="https://badge.fury.io/py/sgci_resource.svg"/>
+            <a href="https://pypi.org/project/sgci-resource/"/>
+            <img src="https://badge.fury.io/py/sgci-resource.svg"/>
         </td>
     </tr>
     <tr>
         <td>PyPI Downloads</td>
         <td>
-            <a href="https://pepy.tech/project/sgci_resource"/>
-            <img src="https://pepy.tech/badge/sgci_resource/month"/>
+            <a href="https://pepy.tech/project/sgci-resource"/>
+            <img src="https://pepy.tech/badge/sgci-resource/month"/>
         </td>
     </tr>
 </table>
