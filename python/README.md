@@ -1,4 +1,4 @@
-# Floatview Stats
+# SGCI-RESOURCE Stats
 
 <table>
     <tr>
